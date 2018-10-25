@@ -10,6 +10,7 @@ pushButton.watch(function (err, value) { //Watch for hardware interrupts on push
   	return;
   }
 
+  console.log('Got button value', value);
   LED.writeSync(value); //turn LED on or off depending on the button state (0 or 1)
 });
 
