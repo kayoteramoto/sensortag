@@ -25,23 +25,27 @@ fs.open("./data.csv", 'a', (err, fd) => {
       LED.writeSync(1); //turn LED on
 
       tag.enableAccelerometer(() => {
-        tag.notifyAccelerometer(() => {
-          tag.on('accelerometerChange', (x, y, z) => {
-            const timestamp = new Date().valueOf();
-            fs.write(fd, x + ", " + timestamp + ", accelerometer-x\n", noOp);
-            fs.write(fd, y + ", " + timestamp + ", accelerometer-y\n", noOp);
-            fs.write(fd, z + ", " + timestamp + ", accelerometer-z\n", noOp);
+        tag.setAccelerometerPeriod(100, () => {
+          tag.notifyAccelerometer(() => {
+            tag.on('accelerometerChange', (x, y, z) => {
+              const timestamp = new Date().valueOf();
+              fs.write(fd, x + ", " + timestamp + ", accelerometer-x\n", noOp);
+              fs.write(fd, y + ", " + timestamp + ", accelerometer-y\n", noOp);
+              fs.write(fd, z + ", " + timestamp + ", accelerometer-z\n", noOp);
+            });
           });
         });
       });
 
       tag.enableGyroscope(() => {
-        tag.notifyGyroscope(() => {
-          tag.on('gyroscopeChange', (x, y, z) => {
-            const timestamp = new Date().valueOf();
-            fs.write(fd, x + ", " + timestamp + ", gyroscope-x\n", noOp);
-            fs.write(fd, y + ", " + timestamp + ", gyroscope-y\n", noOp);
-            fs.write(fd, z + ", " + timestamp + ", gyroscope-z\n", noOp);
+        tag.setGyroscopePeriod(100, () => {
+          tag.notifyGyroscope(() => {
+            tag.on('gyroscopeChange', (x, y, z) => {
+              const timestamp = new Date().valueOf();
+              fs.write(fd, x + ", " + timestamp + ", gyroscope-x\n", noOp);
+              fs.write(fd, y + ", " + timestamp + ", gyroscope-y\n", noOp);
+              fs.write(fd, z + ", " + timestamp + ", gyroscope-z\n", noOp);
+            });
           });
         });
       });
