@@ -1,10 +1,14 @@
 const SensorTag = require('sensortag');
 const fs = require('fs');
 const Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+const onLED = new Gpio(27, 'out'); //use GPIO pin 27 as output
 const LED = new Gpio(4, 'out'); //use GPIO pin 4 as output
 const pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
-// 98:07:2D:26:F9:82
+onLED.writeSync(1); //turn onLED on
+
+// MAC Address for our sensor tag: 98:07:2D:26:F9:82
+
 const noOp = () => {};
 const originalPBValue = pushButton.readSync();
 var connectedTag;
@@ -73,7 +77,9 @@ fs.open("./data.csv", 'a', (err, fd) => {
 
 function unexportOnClose() { //function to run when exiting program
   LED.writeSync(0); // Turn LED off
+  onLED.writeSync(0);
   LED.unexport(); // Unexport LED GPIO to free resources
+  onLED.unexport();
   if (connectedTag != null) {
     connectedTag.disconnect();
   }
