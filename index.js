@@ -19,7 +19,7 @@ function indicateSearchingLED(ledState) {
   ledTimeout = setTimeout(() => indicateSearchingLED(ledState == 0 ? 1 : 0), 500);
 }
 
-fs.open("./data.csv", 'a', (err, fd) => {
+fs.open(`./data-${new Date().toISOString()}.csv`, 'a', (err, fd) => {
   function discoverSensorTag(tag) {
     console.log('Discovered new SensorTag!');
     connectedTag = tag;
