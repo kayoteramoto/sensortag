@@ -12,6 +12,12 @@ onLED.writeSync(1); //turn onLED on
 const noOp = () => {};
 const originalPBValue = pushButton.readSync();
 var connectedTag;
+var ledTimeout;
+
+function indicateSearchingLED(ledState) {
+  LED.writeSync(ledState);
+  ledTimeout = setTimeout(() => indicateSearchingLED(ledState == 0 ? 1 : 0), 500);
+}
 
 fs.open("./data.csv", 'a', (err, fd) => {
   function discoverSensorTag(tag) {
@@ -26,6 +32,9 @@ fs.open("./data.csv", 'a', (err, fd) => {
 
     tag.connectAndSetUp(() => {
       console.log('Connected!');
+      if (ledTimeout) {
+        clearTimeout(ledTimeout);
+      }
       LED.writeSync(1); //turn LED on
 
       tag.enableAccelerometer(() => {
@@ -64,6 +73,7 @@ fs.open("./data.csv", 'a', (err, fd) => {
 
     if (pbValue != originalPBValue) {
       console.log("Attempt SensorTag Discovery");
+      ledTimeout = setTimeout(() => indicateSearchingLED(1), 500);
       SensorTag.discover(discoverSensorTag);
     } else {
       console.log("Stop SensorTag Discovery");
