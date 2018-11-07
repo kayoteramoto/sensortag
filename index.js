@@ -11,7 +11,6 @@ onLED.writeSync(1); //turn onLED on
 
 const noOp = () => {};
 const originalPBValue = pushButton.readSync();
-const fileName = `./data-${new Date().toLocaleString()}.csv`;
 var connectedTag;
 var ledTimeout;
 
