@@ -3,14 +3,13 @@ const fs = require('fs');
 const Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 const onLED = new Gpio(27, 'out'); //use GPIO pin 27 as output
 const LED = new Gpio(4, 'out'); //use GPIO pin 4 as output
-const pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
+const pushButton = new Gpio(17, 'in', 'rising', {debounceTimeout: 10}); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
 onLED.writeSync(1); //turn onLED on
 
 // MAC Address for our sensor tag: 98:07:2D:26:F9:82
 
 const noOp = () => {};
-const originalPBValue = pushButton.readSync();
 var connectedTag;
 var ledTimeout;
 
@@ -66,21 +65,26 @@ function discoverSensorTag(tag) {
   });
 }
 
+var discovering = false;
 pushButton.watch(function (err, pbValue) { //Watch for hardware interrupts on pushButton GPIO, specify callback function
   if (err) { //if an error
     console.error('There was an error', err); //output error message to console
     return;
   }
 
-  if (pbValue != originalPBValue) {
+  if (!discovering) {
     console.log("Attempt SensorTag Discovery");
     ledTimeout = setTimeout(() => indicateSearchingLED(1), 500);
     SensorTag.discover(discoverSensorTag);
+    discovering = true;
   } else {
     console.log("Stop SensorTag Discovery");
     if (connectedTag != null) {
       connectedTag.disconnect();
     }
+    clearTimeout(ledTimeout);
+    LED.writeSync(0);
+    discovering = false;
     SensorTag.stopDiscoverAll(discoverSensorTag);
   }
 });
