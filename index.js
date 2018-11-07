@@ -23,7 +23,7 @@ function discoverSensorTag(tag) {
   console.log('Discovered new SensorTag!');
   connectedTag = tag;
 
-  fs.open(`./data-${new Date().toLocaleString()}.csv`, 'a', (err, fd) => {
+  fs.open(`./data-${new Date().toISOString()}.csv`, 'a', (err, fd) => {
     tag.on('disconnect', () => {
       console.log('Disconnected from SensorTag!');
       LED.writeSync(0); // Turn LED off
@@ -85,7 +85,12 @@ pushButton.watch(function (err, pbValue) { //Watch for hardware interrupts on pu
   }
 });
 
+var closed = false;
 function unexportOnClose() { //function to run when exiting program
+  if (closed) {
+    return;
+  }
+  closed = true;
   LED.writeSync(0); // Turn LED off
   onLED.writeSync(0);
   LED.unexport(); // Unexport LED GPIO to free resources
