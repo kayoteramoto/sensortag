@@ -1,4 +1,5 @@
 const SensorTag = require('sensortag');
+const child_process = require('child_process');
 const fs = require('fs');
 const Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 const onLED = new Gpio(27, 'out'); //use GPIO pin 27 as output
@@ -81,6 +82,7 @@ pushButton.watch(function (err, pbValue) { //Watch for hardware interrupts on pu
     console.log("Stop SensorTag Discovery");
     if (connectedTag != null) {
       connectedTag.disconnect();
+      child_process.execSync('./pushtogit.sh', {stdio:[0,1,2]});
     }
     clearTimeout(ledTimeout);
     LED.writeSync(0);
