@@ -2,3 +2,13 @@ Attempt SensorTag Discovery
 Discovered new SensorTag!
 Connected!
 Stop SensorTag Discovery
+[master 08551a6] Data
+ 2 files changed, 2748 insertions(+)
+ create mode 100644 data-2018-11-07T05:31:44.125Z.csv
+To https://github.com/kayoteramoto/sensortag.git
+   ebf9fc0..08551a6  master -> master
+Disconnected from SensorTag!
+Attempt SensorTag Discovery
+Discovered new SensorTag!
+Connected!
+Stop SensorTag Discovery
