@@ -12,3 +12,13 @@ Attempt SensorTag Discovery
 Discovered new SensorTag!
 Connected!
 Stop SensorTag Discovery
+[master 9ad15dc] Data
+ 2 files changed, 2848 insertions(+)
+ create mode 100644 data-2018-11-09T01:22:20.176Z.csv
+To https://github.com/kayoteramoto/sensortag.git
+   4f6280d..9ad15dc  master -> master
+Disconnected from SensorTag!
+Attempt SensorTag Discovery
+Discovered new SensorTag!
+Connected!
+Stop SensorTag Discovery
